@@ -1,12 +1,23 @@
-let grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0]];
+// var grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
+// 			[0, 0, 0, 0, 0, 0, 0, 0, 0]];
+var grid = [
+    [2, 0, 3, 0, 0, 8, 6, 0, 7],
+    [1, 4, 0, 7, 2, 6, 0, 0, 9],
+    [5, 0, 7, 1, 3, 9, 4, 2, 8],
+    [0, 2, 5, 0, 8, 1, 9, 0, 4],
+    [4, 1, 0, 9, 0, 3, 2, 0, 5],
+    [0, 7, 9, 2, 0, 5, 0, 3, 6],
+    [6, 0, 2, 0, 1, 0, 0, 9, 3],
+    [7, 0, 0, 5, 0, 2, 0, 0, 1],
+    [0, 8, 1, 3, 6, 7, 0, 4, 0]
+];
 
 function createGrid(grid){
 	for(x=0; x<grid.length; x++){
@@ -14,6 +25,7 @@ function createGrid(grid){
 			grid[x][y] = (getGridContent(x, y) == '') ? 0 : parseInt(getGridContent(x, y));
 		}
 	}
+	return grid;
 }
 
 function changeGridContent(rowNumber, cellNumber, value){  
@@ -34,7 +46,7 @@ function getChangeContentValues(){
 }
 
 function checkIfValid(rowNumber, cellNumber, value){
-	if(validInRow(rowNumber, value) && validInCol(cellNumber, value) && validInBox){
+	if(validInRow(rowNumber, value) && validInCol(cellNumber, value) && validInBox(rowNumber, cellNumber, value)){
 		return true;
 	}
 	else {
@@ -75,6 +87,48 @@ function validInBox(rn, cn, v){
 	return true;
 }
 
-createGrid(grid);
-console.log(validInBox(0,0,1));
-console.log(validInBox(0,0,8));
+function findNextEmpty(grid){
+	for(r=0; r<grid.length; r++){
+		for(c=0; c<grid[r].length; c++){
+			if(grid[r][c] == 0){
+				return [r, c]; 
+			}
+		}
+	}
+	return false;
+
+
+}
+
+function solve(grid){
+	let [row, col] = [];
+	//Looks for next empty square, if cant find, returns true
+	if (!findNextEmpty(grid)){
+		return true;
+	} else{
+		//gets row and col of next empty square
+		[row, col] = findNextEmpty(grid);
+	}
+	//attempts to put new value in square at given location
+	for(newVal=1; newVal<10; newVal++){
+		//checks if value is valid
+		if(checkIfValid(row, col, newVal)){
+			//if valid puts value in location
+			console.log(row, col, newVal);
+			grid[row][col] = newVal;
+			console.log(grid[row][col]);
+			//checks to see if the last newVal added solves grid
+			console.log(grid);
+			console.log(grid[row][col]);
+			if (solve(grid)){
+				return true;
+			}
+			//if it didn't it will reset last grid number to 0
+		} else{
+			grid[row][col] = 0;
+		}
+	}
+	return false;
+}
+
+solve(grid);
