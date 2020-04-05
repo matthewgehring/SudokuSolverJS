@@ -1,3 +1,4 @@
+//TODO: Check why column verify function isn't working 100%
 // var grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
 // 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
 // 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -110,23 +111,18 @@ function solve(grid){
 		[row, col] = findNextEmpty(grid);
 	}
 	//attempts to put new value in square at given location
-	for(newVal=1; newVal<10; newVal++){
+	for(let newVal=1; newVal<10; newVal++){
 		//checks if value is valid
 		if(checkIfValid(row, col, newVal)){
 			//if valid puts value in location
-			console.log(row, col, newVal);
 			grid[row][col] = newVal;
-			console.log(grid[row][col]);
 			//checks to see if the last newVal added solves grid
-			console.log(grid);
-			console.log(grid[row][col]);
 			if (solve(grid)){
 				return true;
 			}
 			//if it didn't it will reset last grid number to 0
-		} else{
-			grid[row][col] = 0;
 		}
+		grid[row][col] = 0;
 	}
 	return false;
 }
