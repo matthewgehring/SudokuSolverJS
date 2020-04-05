@@ -63,12 +63,18 @@ function validInCol(cn, v){
 }
 
 function validInBox(rn, cn, v){
-
+	let boxR = Math.floor(rn/3);
+	let boxC = Math.floor(cn/3);
+	for(r=boxR*3; r<boxR*3+3; r++){
+		for(c=boxC*3; c<boxC*3+3; c++){
+			if(grid[r][c] == v && ([r, c] != [rn, cn])){
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 createGrid(grid);
-
-console.log(validInRow(0,1));
-console.log(validInCol(0,1));
-console.log(validInRow(0,8));
-console.log(validInCol(0,8));
+console.log(validInBox(0,0,1));
+console.log(validInBox(0,0,8));
