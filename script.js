@@ -1,4 +1,3 @@
-//TODO: Check why column verify function isn't working 100%
 // var grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
 // 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
 // 			[0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -46,8 +45,8 @@ function getChangeContentValues(){
 	changeGridContent(rn, cn, content);
 }
 
-function checkIfValid(rowNumber, cellNumber, value){
-	if(validInRow(rowNumber, value) && validInCol(cellNumber, value) && validInBox(rowNumber, cellNumber, value)){
+function checkIfValid(rowNumber, colNumber, value){
+	if(validInRow(rowNumber, value) && validInCol(colNumber, value) && validInBox(rowNumber, colNumber, value)){
 		return true;
 	}
 	else {
@@ -65,21 +64,19 @@ function validInRow(rn, v){
 }
 
 function validInCol(cn, v){
-	for(i=0; i<grid.length; i++){
+	for(let i=0; i<grid.length; i++){
 		if(v == grid[i][cn]){
 			return false;
 		}
-		else{
-			return true;
-		}
 	}
+	return true;
 }
 
 function validInBox(rn, cn, v){
 	let boxR = Math.floor(rn/3);
 	let boxC = Math.floor(cn/3);
-	for(r=boxR*3; r<boxR*3+3; r++){
-		for(c=boxC*3; c<boxC*3+3; c++){
+	for(let r=boxR*3; r<boxR*3+3; r++){
+		for(let c=boxC*3; c<boxC*3+3; c++){
 			if(grid[r][c] == v && ([r, c] != [rn, cn])){
 				return false;
 			}
@@ -89,8 +86,8 @@ function validInBox(rn, cn, v){
 }
 
 function findNextEmpty(grid){
-	for(r=0; r<grid.length; r++){
-		for(c=0; c<grid[r].length; c++){
+	for(let r=0; r<grid.length; r++){
+		for(let c=0; c<grid[r].length; c++){
 			if(grid[r][c] == 0){
 				return [r, c]; 
 			}
